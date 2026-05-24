@@ -306,7 +306,16 @@ if question:
                     # ── Analysis text (tool-caller prose) ────────────────────
                     elif etype == "analysis":
                         content = event.get("content", "")
-                        if content.strip() and "<ishikawa>" not in content:
+                        if not content.strip():
+                            pass
+                        elif "<ishikawa>" in content:
+                            # Collapsed expander — useful during prompt validation
+                            # to see exactly what the model produced before parsing
+                            with st.expander(
+                                "🔍 Raw model output (Ishikawa block)", expanded=False
+                            ):
+                                st.code(content, language=None)
+                        else:
                             st.markdown(f"**Agent analysis:**\n\n{content[:800]}")
 
                     # ── Critic feedback ───────────────────────────────────────

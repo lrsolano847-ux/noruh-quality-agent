@@ -265,15 +265,35 @@ def _extract_think(text: str) -> str:
 
 
 def _parse_ishikawa_json(text: str) -> dict | None:
-    """Parse <ishikawa> JSON block from the tool-caller's final message."""
+    """Parse <ishikawa> JSON block from the tool-caller's final message.
+
+    Handles common real-model deviations:
+    - Markdown code fences wrapping the JSON (```json ... ```)
+    - Prose before the opening brace or after the closing brace
+    - Python literals (True/False/None) instead of JSON equivalents
+    - Trailing commas
+    """
     raw = _extract_tag(text, "ishikawa")
     if not raw:
         return None
+    # Strip markdown code fences — models often emit ```json\n{...}\n```
+    raw = re.sub(r"```(?:json)?\s*\n?", "", raw).replace("```", "").strip()
+    # Skip any prose before the opening brace
+    brace = raw.find("{")
+    if brace > 0:
+        raw = raw[brace:]
+    # Skip any prose after the closing brace
+    rbrace = raw.rfind("}")
+    if rbrace >= 0:
+        raw = raw[:rbrace + 1]
     try:
         return json.loads(raw)
     except json.JSONDecodeError:
-        # Attempt lenient parse by stripping trailing commas
+        # Lenient: trailing commas + Python boolean/None literals
         cleaned = re.sub(r",\s*([}\]])", r"\1", raw)
+        cleaned = re.sub(r"\bTrue\b",  "true",  cleaned)
+        cleaned = re.sub(r"\bFalse\b", "false", cleaned)
+        cleaned = re.sub(r"\bNone\b",  "null",  cleaned)
         try:
             return json.loads(cleaned)
         except Exception:
