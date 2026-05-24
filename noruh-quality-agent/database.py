@@ -124,17 +124,32 @@ def _get_embed_fn():
     return _embed_fn
 
 
+_TFIDF_CACHE = Path("chroma_db/tfidf_vectorizer.pkl")
+
+
 def _make_tfidf_embedder():
     """
     Lightweight TF-IDF fallback for network-isolated environments.
     Produces L2-normalised 512-d vectors — not as accurate as BGE but
     sufficient for smoke-testing the retrieval pipeline end-to-end.
+
+    The fitted vectorizer is persisted to chroma_db/tfidf_vectorizer.pkl so
+    query-time embeddings use the exact same vocabulary as the build-time corpus,
+    preventing dimension mismatches across process boundaries.
     """
+    import pickle
     from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.preprocessing import normalize
     import numpy as np
 
     _vectorizer: TfidfVectorizer | None = None
+
+    # Try loading a previously fitted vectorizer from disk
+    if _TFIDF_CACHE.exists():
+        try:
+            with open(_TFIDF_CACHE, "rb") as f:
+                _vectorizer = pickle.load(f)
+        except Exception:
+            _vectorizer = None
 
     def _embed(texts: list[str], is_query: bool = False) -> list[list[float]]:
         nonlocal _vectorizer
@@ -143,6 +158,10 @@ def _make_tfidf_embedder():
                 max_features=512, sublinear_tf=True, ngram_range=(1, 2)
             )
             _vectorizer.fit(texts)
+            # Persist so future query calls load the same vocabulary
+            _TFIDF_CACHE.parent.mkdir(parents=True, exist_ok=True)
+            with open(_TFIDF_CACHE, "wb") as f:
+                pickle.dump(_vectorizer, f)
         vecs  = _vectorizer.transform(texts).toarray().astype(np.float32)
         norms = np.linalg.norm(vecs, axis=1, keepdims=True)
         norms[norms == 0] = 1.0
