@@ -22,8 +22,8 @@ import urllib.error
 import urllib.request
 
 OLLAMA_URL   = "http://localhost:11434"
-TOOL_MODEL   = "qwen3-coder:7b"
-CRITIC_MODEL = "deepseek-r1:8b"
+TOOL_MODEL   = "qwen2.5-coder:7b"
+CRITIC_MODEL = "qwen2.5-coder:7b"
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
