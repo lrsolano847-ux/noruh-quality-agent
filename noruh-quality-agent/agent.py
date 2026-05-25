@@ -24,7 +24,7 @@ from langchain_core.tools import tool
 from langchain_ollama import ChatOllama
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from database import NoruhDB
 
@@ -64,6 +64,34 @@ class IshikawaAnalysis(BaseModel):
         description="Executive summary of the full root-cause investigation.")
     anomalies_found:   list[str] = Field(default_factory=list,
         description="Named anomalies identified (e.g. ANOM-01, ANOM-02).")
+
+    @field_validator(
+        'machine', 'material', 'method', 'human_environment', 'anomalies_found',
+        mode='before',
+    )
+    @classmethod
+    def coerce_to_str_list(cls, v) -> list[str]:
+        if v is None:
+            return []
+        if isinstance(v, str):
+            return [v] if v.strip() else []
+        if isinstance(v, list):
+            result = []
+            for item in v:
+                if isinstance(item, str) and item.strip():
+                    result.append(item)
+                elif isinstance(item, dict):
+                    vals = [str(val) for val in item.values()
+                            if val is not None and str(val).strip()]
+                    if vals:
+                        result.append(", ".join(vals))
+            return result
+        return []
+
+    @field_validator('summary', mode='before')
+    @classmethod
+    def coerce_summary(cls, v) -> str:
+        return str(v) if v is not None else ""
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Tool factory — bound to a NoruhDB instance at graph-build time
