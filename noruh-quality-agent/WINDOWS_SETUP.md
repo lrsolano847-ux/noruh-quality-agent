@@ -70,26 +70,18 @@ You need this to download the code. If you already have a token from a previous 
 1. Press the **Windows key**, type **cmd**, press Enter
 2. In the black window, type the following — replace `PASTE_YOUR_TOKEN_HERE` with the token you copied in Part 3:
    ```
-   git clone https://PASTE_YOUR_TOKEN_HERE@github.com/lrsolano847-ux/leansigma-ai.git
+   git clone https://PASTE_YOUR_TOKEN_HERE@github.com/lrsolano847-ux/noruh-quality-agent.git
    ```
    For example it will look like:
    ```
-   git clone https://ghp_abc123xyz@github.com/lrsolano847-ux/leansigma-ai.git
+   git clone https://ghp_abc123xyz@github.com/lrsolano847-ux/noruh-quality-agent.git
    ```
 3. Press Enter and wait for it to finish. You will see "done" when complete
 4. Type this and press Enter:
    ```
-   cd leansigma-ai
-   ```
-5. Type this and press Enter:
-   ```
-   git checkout claude/intelligent-knuth-NUZKQ
-   ```
-6. Type this and press Enter:
-   ```
    cd noruh-quality-agent
    ```
-7. Verify you are in the right place by typing:
+5. Verify you are in the right place by typing:
    ```
    dir
    ```
@@ -100,7 +92,7 @@ You need this to download the code. If you already have a token from a previous 
 ## Part 5 — Run the setup script
 
 1. Open **File Explorer** (the folder icon on your taskbar)
-2. Navigate to: `C:\Users\YOUR_NAME\leansigma-ai\noruh-quality-agent`
+2. Navigate to: `C:\Users\YOUR_NAME\noruh-quality-agent`
    (replace YOUR_NAME with your Windows username)
 3. Find the file called **setup_windows.bat**
 4. **Right-click** it and select **Run as administrator**
@@ -143,7 +135,8 @@ The app uses one AI model that is about **4.7 GB**. This is a one-time download.
 ## Part 8 — Launch the app
 
 1. Open **File Explorer**
-2. Navigate to: `C:\Users\YOUR_NAME\leansigma-ai\noruh-quality-agent`
+2. Navigate to: `C:\Users\YOUR_NAME\noruh-quality-agent`
+   (replace YOUR_NAME with your Windows username)
 3. Find the file called **start_windows.bat**
 4. **Double-click** it
 5. A black window will open and you will see the app starting up
@@ -161,7 +154,7 @@ The app uses one AI model that is about **4.7 GB**. This is a one-time download.
 You only need to do this — everything else is already installed:
 
 1. Open **File Explorer**
-2. Navigate to: `C:\Users\YOUR_NAME\leansigma-ai\noruh-quality-agent`
+2. Navigate to: `C:\Users\YOUR_NAME\noruh-quality-agent`
 3. Double-click **start_windows.bat**
 4. Open your browser and go to `http://localhost:8501`
 
