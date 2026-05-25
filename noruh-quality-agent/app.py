@@ -30,39 +30,42 @@ st.markdown("""
 <style>
 /* Ishikawa category cards */
 .ishi-card {
-    background: #1e1e2e;
+    background: #ffffff;
     border-radius: 8px;
     padding: 14px 16px;
     margin-bottom: 10px;
     border-left: 4px solid;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
-.ishi-machine  { border-color: #ef4444; }
-.ishi-material { border-color: #f97316; }
-.ishi-method   { border-color: #3b82f6; }
-.ishi-human    { border-color: #22c55e; }
+.ishi-machine  { border-color: #ef4444; background: #fff5f5; }
+.ishi-material { border-color: #f97316; background: #fff7ed; }
+.ishi-method   { border-color: #3b82f6; background: #eff6ff; }
+.ishi-human    { border-color: #22c55e; background: #f0fdf4; }
 .ishi-title {
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    opacity: 0.7;
+    color: #374151;
     margin-bottom: 6px;
 }
 .ishi-item {
     font-size: 0.9rem;
     padding: 3px 0;
     line-height: 1.5;
+    color: #1f2937;
 }
 /* SQL preview block */
 .sql-preview {
     font-family: monospace;
     font-size: 0.78rem;
-    background: #0d1117;
+    background: #f8fafc;
     padding: 8px 12px;
     border-radius: 6px;
     white-space: pre-wrap;
     word-break: break-all;
-    color: #7dd3fc;
+    color: #1e40af;
+    border: 1px solid #e2e8f0;
 }
 /* Anomaly badge */
 .anomaly-badge {
