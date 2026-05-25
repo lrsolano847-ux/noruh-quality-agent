@@ -1,0 +1,26 @@
+# Noruh Manufacturing — Local Quality Analytics Agent
+# Install with: pip install -r requirements.txt
+# Models: ollama pull qwen3-coder:7b && ollama pull deepseek-r1:8b
+
+# Data layer
+duckdb>=1.0.0
+pandas>=2.0.0
+numpy>=1.26.0
+
+# Vector store + embeddings
+chromadb>=0.5.0
+sentence-transformers>=3.0.0   # uses BAAI/bge-small-en-v1.5
+
+# SQL validation
+sqlglot>=23.0.0
+
+# Agent framework
+langgraph>=0.2.0
+langchain-core>=0.3.0
+langchain-ollama>=0.2.0
+
+# UI
+streamlit>=1.38.0
+
+# Fallback embedder (testing / network-isolated envs)
+scikit-learn>=1.5.0
