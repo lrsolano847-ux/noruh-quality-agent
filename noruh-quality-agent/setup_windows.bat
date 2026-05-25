@@ -76,9 +76,10 @@ echo  NEXT STEPS:
 echo  1. Install Ollama from: https://ollama.com/download
 echo     (download the Windows installer and run it)
 echo.
-echo  2. Open Command Prompt and run:
-echo     ollama pull qwen2.5-coder:7b
-echo     (this downloads ~4.7 GB - will take a while)
+echo  2. Open Command Prompt and run these two commands:
+echo     ollama pull qwen3-coder:7b
+echo     ollama pull deepseek-r1:8b
+echo     (these download ~8 GB total - will take a while)
 echo.
 echo  3. Once the model is downloaded, double-click start_windows.bat
 echo     to launch the app, then open your browser to:

@@ -30,10 +30,10 @@ from database import NoruhDB
 
 # ── Ollama config ─────────────────────────────────────────────────────────────
 OLLAMA_URL        = "http://localhost:11434"
-TOOL_MODEL        = "qwen2.5-coder:7b"  # SQL generation + tool calling
-CRITIC_MODEL      = "qwen2.5-coder:7b"  # Reasoning critique (same model, stays loaded)
+TOOL_MODEL        = "qwen3-coder:7b"    # SQL generation + tool calling
+CRITIC_MODEL      = "deepseek-r1:8b"   # Reasoning critique
 MAX_RETRIES       = 3
-MAX_SQL_ROWS      = 200                 # cap result size sent to LLM context
+MAX_SQL_ROWS      = 200                # cap result size sent to LLM context
 
 # ─────────────────────────────────────────────────────────────────────────────
 # LangGraph state
@@ -269,10 +269,11 @@ def _critic_system_prompt() -> str:
 # ─────────────────────────────────────────────────────────────────────────────
 
 def _ollama(model: str, tools=None, **kwargs) -> ChatOllama:
-    """Returns a ChatOllama client. Model stays loaded between calls (single-model setup)."""
+    """Returns a ChatOllama client that evicts the model from RAM after the call."""
     params = dict(
         model=model,
         base_url=OLLAMA_URL,
+        keep_alive=0,        # evict immediately → sequential loading, peak RAM ≤ 12 GB
         temperature=0.1,
         **kwargs,
     )

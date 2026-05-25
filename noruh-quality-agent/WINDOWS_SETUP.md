@@ -117,18 +117,21 @@ You need this to download the code. If you already have a token from a previous 
 
 ---
 
-## Part 7 — Download the AI model
+## Part 7 — Download the AI models
 
-The app uses one AI model that is about **4.7 GB**. This is a one-time download.
+The app uses two AI models totalling about **8 GB**. This is a one-time download.
 
 1. Press the **Windows key**, type **cmd**, press Enter
-2. Type this and press Enter:
+2. Type this and press Enter (first model, ~4.7 GB):
    ```
-   ollama pull qwen2.5-coder:7b
+   ollama pull qwen3-coder:7b
    ```
-3. You will see a progress bar. Wait for it to reach 100%
-   This may take **15–60 minutes** depending on your internet speed
-   Do not close the window until it says "success"
+3. Wait for it to reach 100%, then type this and press Enter (second model, ~4.9 GB):
+   ```
+   ollama pull deepseek-r1:8b
+   ```
+4. Each download may take **15–60 minutes** depending on your internet speed.
+   Do not close the window until each one says "success"
 
 ---
 

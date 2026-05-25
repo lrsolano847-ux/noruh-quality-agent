@@ -120,35 +120,60 @@ The vector store (`chroma_db/`) is built automatically on first app launch.
 
 ---
 
+## What was completed in session 2
+
+### Live prompt validation ✅ (partially)
+- `probe.py` created — standalone script that tests both models' format compliance
+  before running the full app. Three probes: `<ishikawa>` format, `<verdict>` format,
+  retry routing. Run with: `python probe.py`
+- `_parse_ishikawa_json` hardened against real-model deviations:
+  markdown code fences, prose before/after JSON, Python True/False/None literals,
+  trailing commas. All 8 parser edge cases pass.
+- App now shows a collapsed **"Raw model output"** expander for the `<ishikawa>`
+  message so parse failures are visible without digging through logs.
+- Pydantic `IshikawaAnalysis` validators added to coerce strings→lists, nulls→[],
+  and list-of-dicts→list-of-strings — prevents raw JSON leaking into the summary box.
+- Light theme applied to Ishikawa cards (was unreadable dark theme).
+- Tested on Chromebook with `qwen2.5-coder:7b` (single model, see note below).
+  Full validation against `qwen3-coder:7b` + `deepseek-r1:8b` still needed on a
+  machine with 16 GB RAM.
+
+### Windows deployment package ✅
+- `setup_windows.bat` — double-click installer for Windows
+- `start_windows.bat` — double-click launcher for Windows
+- `WINDOWS_SETUP.md` — full non-developer setup guide for Windows
+
+### Model note
+During Chromebook testing, model substitutions were made due to hardware limits
+(6 GB RAM, no swap). The canonical models (`qwen3-coder:7b` + `deepseek-r1:8b`)
+are restored in all code. See the Model Evolution table in the session chat for
+the full substitution history.
+
 ## What is NOT done yet — proposed next steps
 
-These are in rough priority order but none have been started:
-
-### 1. Live prompt validation (highest priority)
-The prompts were tuned analytically but have **never been tested against a
-real Ollama model**. When the user runs locally, the first things to check:
+### 1. Live prompt validation on target hardware (highest priority)
+Run the full app with `qwen3-coder:7b` + `deepseek-r1:8b` on a 16 GB machine:
 - Does `qwen3-coder:7b` correctly follow the Phase 1/2 output contract?
 - Does it produce valid `<ishikawa>` JSON on the first attempt?
 - Does `deepseek-r1:8b` reliably follow the `<verdict>` tag format?
 - Does the 3-pass retry loop actually converge, or does it loop/stall?
 
-Approach: run `streamlit run app.py` and ask the 5 example questions one
-by one. Observe the streaming status panel for malformed SQL, missing tags,
-or infinite loops. Tune prompts based on actual model behaviour.
+Start with `python probe.py` then `streamlit run app.py` → ask all 5 example
+questions → observe the streaming panel and the "Raw model output" expanders.
 
 ### 2. Edge case hardening
 - What happens if Ollama times out mid-response?
 - What if `qwen3-coder:7b` calls a tool that doesn't exist?
 - What if the `<ishikawa>` JSON has a syntax error the lenient parser can't fix?
-- Currently `ishikawa_formatter` has a fallback but it's not well tested.
 
-### 3. README
-A user-facing setup guide for the repo. Currently the only docs are this file.
+### 3. Performance profiling
+Confirm `keep_alive=0` sequential loading keeps peak RAM within 12 GB on a
+16 GB machine when both models are used.
 
-### 4. Performance profiling
-Measure actual RAM usage with both models loaded sequentially on a 16 GB
-machine. Confirm the `keep_alive=0` sequential loading stays within the
-12 GB PRD constraint.
+### 4. Push noruh-quality-agent to its own standalone repo
+A dedicated `noruh-quality-agent` GitHub repo was created. The Chromebook push
+commands are in session 2 chat. Run them to make the Windows setup guide
+available at a clean, standalone URL.
 
 ---
 
