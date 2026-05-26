@@ -98,8 +98,9 @@ You need this to download the code. If you already have a token from a previous 
 4. **Right-click** it and select **Run as administrator**
    If Windows asks "Do you want to allow this app to make changes?" click **Yes**
 5. A black window will open and begin installing packages
-   - This takes **5–15 minutes** depending on your internet speed
+   - This takes **8–20 minutes** depending on your internet speed
    - You will see text scrolling — this is normal
+   - The last step trains a machine learning model (~2–4 minutes) — do not close the window
    - If you see a red error about a package timing out, close the window and double-click **setup_windows.bat** again — it will continue from where it left off
 6. When it finishes you will see the message **"Setup complete!"**
    Read the next steps printed on screen (they match Part 6 and 7 below)
@@ -148,7 +149,9 @@ The app uses two AI models totalling about **8 GB**. This is a one-time download
    ```
    http://localhost:8501
    ```
-7. The Noruh Quality Agent dashboard will load
+7. The Noruh Quality Agent dashboard will load. The sidebar shows two pages:
+   - **Noruh Quality Agent** — the AI root-cause analysis chat
+   - **Predictive Quality** — machine learning defect risk dashboard
 
 ---
 

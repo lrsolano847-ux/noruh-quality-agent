@@ -4,3 +4,5 @@ __pycache__/
 *.pyo
 .env
 chroma_db/
+ml/quality_model.joblib
+venv/
